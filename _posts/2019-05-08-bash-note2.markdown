@@ -1,0 +1,153 @@
+---
+layout: post
+title:  "Bash笔记"
+date:   2019-05-08 11:11:59 +0800
+categories: bash
+---
+{: class="table-of-content"}
+* TOC
+{:toc}
+记录常用的bash功能
+
+# 多个重定向
+从一个包含wav文件的文件夹，生成对应id+path的格式的scp文件
+{% highlight ruby %}
+paste <(ls *.wav) <(ls -d -1 "$PWD/"*.wav) > wav.scp
+{% endhighlight %}
+
+# awk
+使用变量
+awk -v m=$min_len '{ if ($3 >= m) {print $1 " " $2} }' file
+
+某一列包含某个字符串，如第三例包含医院
+{% highlight ruby %}
+    awk '$3 ~ /医院/' input
+{% endhighlight %}
+
+
+输出超过10个字符的行
+{% highlight ruby %}
+    awk 'length($0) > 10' input 
+{% endhighlight %}
+
+# ln
+B目录里link A目录中的所有文件
+```
+cd B
+ln -fs A/* ./ 
+```
+copy源目录src中的link的原始文件，
+```
+cp -rL src/ dst/
+```
+# bash
+获得不带路径和后缀的文件名
+```
+s='/export/share-nfs-1/chaoyang/code/grpc_python/asr/file.txt'
+s=${s##*/};echo ${s%.*}
+```
+
+```
+fbname=$(basename "$fullfile" | cut -d. -f1)
+```
+
+
+# uniq
+将uniq -c的output格式变为标准的tab分割.
+```
+uniq -c gaode.chaoshi.processed|sort -k 1 -n -r|sed -e 's/^ *//;s/ /\t/'|head -10000 > chaoshi.10k
+```
+
+# date
+Sun Jan 19 11:40:01 CST 2020
+date | awk '{print $6 "-" $2 "-" $3 " " $4}'
+2020-Jan-19 11:39:54
+
+# bc
+bc <<< "2-1"
+
+# echo 
+-n 输出不换行的字符串
+echo -n "time:"
+
+# seq
+
+seq 1 10
+
+for iter in $(seq $start_epoch_num $max_iters); do
+
+done
+
+# 重定向
+重定向到文件？
+
+```>& train.log```
+
+
+# if
+
+**and/or**
+
+if [ 1 == $halving -a 1 == $(bc <<< "$rel_impr < $end_halving_inc") ]; then
+
+**字符串比较**
+if [[ "$min_iters" != "" ]]; then
+
+**数值比较**
+if [ $min_iters -gt $iter ]; then
+
+**变量存在**
+if ! $skip_scoring ; then
+if $score_with_conf ; then
+[ -z "$label_counts" ] && label_counts=${srcdir}/label.counts
+
+**文件存在**
+if [ -f $data/stm ];
+
+**单指令语法
+[ ! -x local/score_sclite_conf.sh ] && echo "Not scoring because ..."
+
+## SIG
+local/score_sclite_conf.sh $scoring_opts --cmd "$cmd" $data $graphdir $dir || exit 1;
+
+`[]`的个数?
+
+
+# trap
+trap func SIG
+func可以是字符串或者函数
+trap "echo \"Removing features tmpdir $tmpdir @ $(hostname)\"; ls $tmpdir; rm -r $tmpdir" EXIT
+
+function cleanup()
+{
+    # ...
+}
+
+trap cleanup EXIT
+
+# 变量
+${var:-default},若var为定义，使用默认值default
+
+seed=999;echo ${seed:-777}
+输出户999
+
+echo ${seed:-777}
+输出777
+
+数组
+
+# 参数
+$1,$2
+shift
+$# 的意义？
+
+
+
+
+
+
+# source和.
+
+source和.的区别？
+
+变量的作用域？？

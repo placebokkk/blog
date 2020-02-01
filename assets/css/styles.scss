@@ -1,0 +1,17 @@
+---
+---
+@import "minima";
+
+table {
+    border-collapse: collapse;
+}
+ 
+  table, td, th {
+    border: 1px solid black;
+}
+
+.post-list {
+    margin-left: 0;
+    list-style: none; }
+    .post-list > li {
+      margin-bottom: 0px; }
